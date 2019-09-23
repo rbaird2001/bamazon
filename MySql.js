@@ -1,25 +1,26 @@
-require("dotenv")
-require("./mysqlAuth")
+let dotenv = require("dotenv");
+let mysqlAuth = require("./mysqlAuth");
+const mysql = require("mysql");
+
 const MySql = function () {
-    this.mysql = require("mysql");
     this.sql = mysql.createConnection({
         host: "localhost", //Where your DB server is located localhost refers to your computer.
         port: 3306, // Your port; if not 3306. 3306 is the mysql default port for TCPIP.      
-        user: mysqlAuth.auths.user, // The name of the account used to communicate with mysql. 
-        password: mysqlAuth.auths.password, //add your password
+        user: "root", // The name of the account used to communicate with mysql. 
+        password: "KrazyGlu3", //add your password
         database: "bamazon"
     });
 }
 
-MySql.protoype.select = function (sqlStatement, sqlOptions) {
-    return new Promise(function (resolve, reject) {
-        this.sql.query(sqlStatement, sqlOptions, function (err, dataset) {
+MySql.prototype.select = function (sqlStatement, sqlOptions) {
+    return new Promise((resolve, reject) => {
+        let qry = this.sql.query(sqlStatement, sqlOptions,(err, dataset) => {
             if (err) {
-                reject(err)
+                return reject(err, qry)
             } else {
                 datasetStr = JSON.stringify(dataset);
                 datasetPar = JSON.parse(datasetStr);
-                resolve(datasetPar);
+                return resolve(datasetPar);
             }
         });
     });
@@ -38,3 +39,4 @@ MySql.prototype.execute = function(sqlStatement, sqlOptions){
     })
 }
 
+module.exports = MySql
