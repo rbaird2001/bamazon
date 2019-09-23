@@ -1,8 +1,6 @@
 require("dotenv")
 require("./mysqlAuth")
-const MySql = function (sqlStatement, sqlOptions) {
-    this.sqlStatement = sqlStatement;
-    this.sqlOptions = sqlOptions;
+const MySql = function () {
     this.mysql = require("mysql");
     this.sql = mysql.createConnection({
         host: "localhost", //Where your DB server is located localhost refers to your computer.
@@ -15,7 +13,7 @@ const MySql = function (sqlStatement, sqlOptions) {
 
 MySql.protoype.select = function (sqlStatement, sqlOptions) {
     return new Promise(function (resolve, reject) {
-        let qry = this.sql.query(sqlStatement, sqlOptions, function (err, dataset) {
+        this.sql.query(sqlStatement, sqlOptions, function (err, dataset) {
             if (err) {
                 reject(err)
             } else {
@@ -27,9 +25,9 @@ MySql.protoype.select = function (sqlStatement, sqlOptions) {
     });
 }
 
-MySql.prototype.update = function(sqlStatement, sqlOptions){
+MySql.prototype.execute = function(sqlStatement, sqlOptions){
     return new Promise(function(resolve,reject){
-        qry = this.sql.query(sqlStatement,sqlOptions,function(err){
+        this.sql.query(sqlStatement,sqlOptions,function(err){
             if(err){
                 reject(err);
             }
