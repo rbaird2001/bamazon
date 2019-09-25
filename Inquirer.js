@@ -18,4 +18,14 @@ Inquirer.prototype.numInput = function(question){
     }])
 }
 
+Inquirer.prototype.confirm = function(question){
+    return inquirer.prompt([{
+        type:"confirm",
+        name:"confirm",
+        message: question,
+    }])
+}
+
+
+
 module.exports = Inquirer

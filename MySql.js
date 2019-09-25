@@ -14,7 +14,7 @@ const MySql = function () {
 
 MySql.prototype.select = function (sqlStatement, sqlOptions) {
     return new Promise((resolve, reject) => {
-        let qry = this.sql.query(sqlStatement, sqlOptions,(err, dataset) => {
+        this.sql.query(sqlStatement, sqlOptions,(err, dataset) => {
             if (err) {
                 return reject(err, qry)
             } else {
@@ -27,7 +27,7 @@ MySql.prototype.select = function (sqlStatement, sqlOptions) {
 }
 
 MySql.prototype.execute = function(sqlStatement, sqlOptions){
-    return new Promise(function(resolve,reject){
+    return new Promise((resolve,reject) => {
         this.sql.query(sqlStatement,sqlOptions,function(err){
             if(err){
                 reject(err);
