@@ -26,6 +26,6 @@ Inquirer.prototype.confirm = function(question){
     }])
 }
 
-
+Inquirer.prototype.ama = function(prompter){return inquirer.prompt(prompter)};
 
 module.exports = Inquirer

@@ -58,18 +58,18 @@ const continueShopping = function(){
     let choices = [
         {
         name:"Keep shopping.",
-        value:true
+        value:"shop"
         },
         {
             name:"Go to checkout.",
-            value:false
+            value:"checkout"
         }
     ]
     let inq = new Inquirer();
     inq.rawList(choices,"What would you like to do next?")
         .then(function(resp){
             console.log(resp);
-            if(resp.choice === true){
+            if(resp.choice === "shop"){
                 initShopping();
             }
             else{
@@ -86,13 +86,13 @@ orderProcess = function (){
         ]
         sql.execute("UPDATE products SET ? Where ?",updateStock)
             .then(function(){
-                console.log("Your order has been successfully processed."); 
                 sql.sql.end();
             })
             .catch(function(err){
                 console.log(err);
                 sql.sql.end()
             })
-    }      
+        }      
+    console.log("Your order has been successfully processed."); 
 }
 initShopping();
