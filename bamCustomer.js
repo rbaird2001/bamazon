@@ -2,33 +2,51 @@
 const MySql = require("./MySql");
 const sql = new MySql();
 const Inquirer = require("./Inquirer");
+const clear = require("clear")
 const shopCart = []
 
-initShopping = function () {
+initShopping();
+function initShopping() {
     let selProduct = {}
-    sql.select("select product_name as name,item_id as value from products", "")
+    sql.select("SELECT CONCAT(product_name,' -- ', department_name, ' -- ', price, ' -- ', stock_quantity, ' grams') as name,item_id as value from products WHERE stock_quantity > 0", "")
         .then(
             function (dataset) {
                 //console.log(dataset);
+                clear();
                 let inq = new Inquirer();
-
-                inq.rawList(dataset, "Make your selection from the following options:")
+                inq.rawList(dataset, "\n\nMake your selection from the following options:")
                     .then(function (resp) {
                         //console.log(resp);
-                        sql.select("select * from products where item_id = ?",resp.choice)
+                        sql.select("select * from products where item_id = ?", resp.choice)
                             .then(function (dataset) {
                                 selProduct = dataset[0];
                                 //console.log(selProduct);
+                                clear();
                                 console.log(`You selected ${selProduct.product_name} -- ${selProduct.department_name}.`)
                                 console.log(`   The current price is: ${selProduct.price}`);
-                                console.log(`   The current quantity is: ${selProduct.stock_quantity}`);
-                                console.log(`___________ \n`);
+                                console.log(`   The current quantity is: ${selProduct.stock_quantity} grams`);
+                                console.log(`___________ \n\n`);
                                 inq.numInput("Enter your desired amount. Amount cannot exceed available quantity.")
                                     .then(function (resp) {
                                         //console.log(resp);
+                                        if (resp.number < 1) {
+                                            clear();
+                                            console.log("You have selected zero grams ");
+                                            console.log("Nothing will be added to your cart.");
+                                            console.log("\n\n");
+                                            continueShopping()
+                                        }
                                         let inventoryDemand = selProduct.stock_quantity - resp.number;
-                                        inventoryDemand > 0 ? true : console.log("The amount requested exceeds inventory. We will add the available quantity to your cart.");
-                                        inventoryDemand > 0 ? selProduct.cartNumber = resp.number : selProduct.cartNumber = selProduct.stock_quantity;
+                                        //console.log(inventoryDemand < 0);
+                                        if (inventoryDemand < 0) {
+                                            clear();
+                                            console.log("The amount requested exceeds inventory. We will add the available quantity to your cart.");
+                                            selProduct.cartNumber = selProduct.stock_quantity
+                                        }
+                                        else {
+                                            clear();
+                                            selProduct.cartNumber = resp.number;
+                                        }
                                         //console.log(selProduct);
                                         shopCart.push(selProduct);
                                         console.log(`__________\n\n\n`);
@@ -36,63 +54,69 @@ initShopping = function () {
                                         console.log(`_________\n\n`);
                                         continueShopping();
                                     })
-                                    .catch(function(err){
-                                        throw(err);
+                                    .catch(function (err) {
+                                        throw (err);
                                     });
                             })
-                            .catch(function(err){
+                            .catch(function (err) {
                                 console.log(err);
-                                throw(sql.sql.query().sql);
+                                throw (sql.sql.query().sql);
                             })
                     }
                     )
                     .catch(function (rej) {
                         console.log("Rejected: ", rej);
-                        throw(rej);
+                        throw (rej);
                     }
                     );
             });
 }
 
-const continueShopping = function(){
+const continueShopping = function () {
     let choices = [
         {
-        name:"Keep shopping.",
-        value:"shop"
+            name: "Keep shopping.",
+            value: "shop"
         },
         {
-            name:"Go to checkout.",
-            value:"checkout"
+            name: "Go to checkout.",
+            value: "checkout"
         }
     ]
     let inq = new Inquirer();
-    inq.rawList(choices,"What would you like to do next?")
-        .then(function(resp){
-            console.log(resp);
-            if(resp.choice === "shop"){
+    inq.rawList(choices, "What would you like to do next?")
+        .then(function (resp) {
+            //console.log(resp);
+            if (resp.choice === "shop") {
                 initShopping();
             }
-            else{
+            else {
                 orderProcess();
             }
         })
 }
 
-orderProcess = function (){
-    for(let i=0;i<shopCart.length;i++){
+orderProcess = function () {
+    clear();
+    console.log("Your order has been successfuly processed.")
+    console.log("You have ordered the following:")
+    for (let i = 0; i < shopCart.length; i++) {
         let updateStock = [
-            {stock_quantity: shopCart[i].stock_quantity - shopCart[i].cartNumber},
-            {item_id:shopCart[i].item_id}
+            { stock_quantity: shopCart[i].stock_quantity - shopCart[i].cartNumber },
+            { item_id: shopCart[i].item_id }
         ]
-        sql.execute("UPDATE products SET ? Where ?",updateStock)
-            .then(function(){
-                sql.sql.end();
+        sql.execute("UPDATE products SET ? Where ?", updateStock)
+            .then(function () {
+                console.log(`     ${shopCart[i].cartNumber} grams of ${shopCart[i].product_name}`)
+                if(i+1 === shopCart.length){
+                    console.log("\n\n");
+                    sql.sql.end();
+                }
             })
-            .catch(function(err){
+            .catch(function (err) {
                 console.log(err);
                 sql.sql.end()
+                return false
             })
-        }      
-    console.log("Your order has been successfully processed."); 
+    }
 }
-initShopping();
