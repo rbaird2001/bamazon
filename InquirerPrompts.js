@@ -31,12 +31,12 @@ module.exports.prodManageOpt = [
         value: 1
     },
     {
-        name: "Remove from product offerings",
+        name: "Nothing more, thank you.",
         value: 2
     },
-    {
-        name: "Nothing more, thank you.",
-        value: 3
-    }
+    // {
+    //     name: "Nothing more, thank you.",
+    //     value: 3
+    // }
 ]
 //module.exports = mgrTodo;
