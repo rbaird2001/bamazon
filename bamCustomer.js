@@ -1,8 +1,8 @@
 
-const MySql = require("./MySql");
-const sql = new MySql();
-const Inquirer = require("./Inquirer");
-const clear = require("clear")
+const MySql = require("./MySql"); //converts the mysql node to support promise and cleans up the returned data to be more user freindly
+const sql = new MySql(); 
+const Inquirer = require("./Inquirer"); //Attempt to simplify the inquirer process.
+const clear = require("clear") //Clears the screen to be more user friendly.
 const shopCart = []
 
 initShopping();
@@ -14,13 +14,16 @@ function initShopping() {
                 //console.log(dataset);
                 clear();
                 let inq = new Inquirer();
+                //insert the sql results into a numbered list
                 inq.rawList(dataset, "\n\nMake your selection from the following options:")
                     .then(function (resp) {
                         //console.log(resp);
+                        //select detail of the selected product.
                         sql.select("select * from products where item_id = ?", resp.choice)
                             .then(function (dataset) {
                                 selProduct = dataset[0];
                                 //console.log(selProduct);
+                                //Return the product detail in a user friendly format.
                                 clear();
                                 console.log(`You selected ${selProduct.product_name} -- ${selProduct.department_name}.`)
                                 console.log(`   The current price is: ${selProduct.price}`);
@@ -72,6 +75,7 @@ function initShopping() {
             });
 }
 
+//Allow customers to shop for multple products
 const continueShopping = function () {
     let choices = [
         {
