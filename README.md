@@ -8,21 +8,20 @@ This application includes a the ability to select products as a customer (bamCus
 The customer file, _bamCustomer.js_ allows you to select multiple products before entering checkout.  In the images below three products are selected.  Notice the quantity before and after checkout:
 
 Before checkout the database shows item_id's of 3, 6, 9, with stock_quantity values of 9, 14, and 19 respectively
-![bamCust01](https://github.com/rbaird2001/bamazon/images/blob/master/bamCust01.gif)
-
+![bamCust01](https://github.com/rbaird2001/bamazon/blob/master/images/bamCust01.gif)
+          
 This image shows the products ordered.
-![bamCust01](https://github.com/rbaird2001/bamazon/images/blob/master/bamCust03.png)
+![bamCust01](https://github.com/rbaird2001/bamazon/blob/master/images/bamCust03.png)
 
 The full process is shown here:
-![bamCust01](https://github.com/rbaird2001/bamazon/images/blob/master/bamCust02.gif)
+![bamCust01](https://github.com/rbaird2001/bamazon/blob/master/images/bamCust02.gif)
 
 After the order, the values in the stock_quantity are reduced respective to the amount ordered. The difference in the values before and after can be seen here after the query is run a second time:
-![bamCust01](https://github.com/rbaird2001/bamazon/images/blob/master/bamCust04.gif)
+![bamCust01](https://github.com/rbaird2001/bamazon/blob/master/images/bamCust04.gif)
 
 ### bamManager
 The manager file, _bamManager_ allows you to view full inventory, low inventory and to add inventory from either list. The changes are reflected in the database:
-![bamCust01](https://github.com/rbaird2001/bamazon/images/blob/master/bamManager01.gif)
-
+![bamCust01](https://github.com/rbaird2001/bamazon/blob/master/images/bamManager01.gif)
 
 ### Regarding Constructors and Prototypes
 Beyond the use of MySql and Inquirer in this project, we also implemented constructors and prototypes as major tools. Both are designed to simplify the use of the _mysql_ and _inquirer_ node packages. Understanding how they are setup will make following this code easier.
