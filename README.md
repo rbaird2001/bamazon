@@ -7,11 +7,11 @@ This application includes a the ability to select products as a customer (bamCus
 ### bamCustomer
 The customer file, _bamCustomer.js_ allows you to select multiple products before entering checkout.  In the images below three products are selected.  Notice the quantity before and after checkout:
 
-Before checkout the database shows item_id's of 3, 6, 9, with stock_quantity values of 9, 14, and 19 respectively
+Before checkout, the database shows item_id's of 3, 6, 9, with stock_quantity values of 9, 14, and 19 respectively:
 ![bamCust01](https://github.com/rbaird2001/bamazon/blob/master/images/bamCust01.gif)
           
-This image shows the products ordered.
-![bamCust01](https://github.com/rbaird2001/bamazon/blob/master/images/bamCust03.png)
+This image shows the products ordered:
+![bamCust01](https://github.com/rbaird2001/bamazon/blob/master/images/bamCust03.gif)
 
 The full process is shown here:
 ![bamCust01](https://github.com/rbaird2001/bamazon/blob/master/images/bamCust02.gif)
@@ -26,11 +26,11 @@ The manager file, _bamManager_ allows you to view full inventory, low inventory 
 ### Regarding Constructors and Prototypes
 Beyond the use of MySql and Inquirer in this project, we also implemented constructors and prototypes as major tools. Both are designed to simplify the use of the _mysql_ and _inquirer_ node packages. Understanding how they are setup will make following this code easier.
 
-A constructor named _MySql_ was created mainly to enable the use of a promise. _mysql_ package relies on callback functions which can be unwieldy as a program gets more complex. Insteady of relying on callbacks for one module, and promises in another, we attempt to be consistent by using promises in both. The _MySql_ constructor also includes specific prototypes for select queries and execute queries (which include inserts, updates, and deletes). The select query also performs functions on the results before returning them via the promise. This cleans the returned data further to be more usable.
+A constructor named _MySql_ was created mainly to enable the use of a promise. _mysql_ package relies on callback functions which can be unwieldy as a program gets more complex. Instead of relying on callbacks for one module, and promises in another, we attempt to be consistent by using promises in both. The _MySql_ constructor also includes specific prototypes for select queries and execute queries (which include inserts, updates, and deletes). The select query also performs JSON commands on the results before returning them via the promise. This cleans the returned data further to be more usable.
 
-A constructor name _Inquirer_ was created to simplify the use of the rawList option in inquirer choices. It includes prototypes for different choice options. 
+A constructor named _Inquirer_ was created primarily to simplify the use of the rawList option in inquirer choices. It also includes prototypes for other choice options. 
 
-The implementation of both allows us to return results directly from the query to the choice list without having to implement loops. It also provided solid experience in using contructors and prototypes. However, in retrospect we could have extended their use further as there were multiple, nearly identical queries used that could have been made into prototypes and eased up the sytax even more.
+The implementation of both allows the return of query to be directly added to an inquerer the choice list without having to implement loops. It also provided solid experience in using contructors and prototypes. However, in retrospect we could have extended their use further as there were multiple, nearly identical queries used that could have been made into prototypes and eased up the syntax even more.
 
 ## Made With
 * MySql Server and MySql workbench.
@@ -45,6 +45,8 @@ Node JS with the following npm packages:
 * dotenv
 * clear
 
+MySqlServer and MySqlWorkbench (or some other MySql capable client).
+
 ## Setup
 1. Install Node JS to your device.
 2. Install MySql Server to your Device.
@@ -57,7 +59,7 @@ Node JS with the following npm packages:
 7. Execute _node bamManager.js_ for product inventory management.
 
 ## Contributions
-This was a solo project.
+This is a solo project.
 
 ## License
 This projecut is licensed under the MIT licesnse.
